@@ -1,0 +1,6 @@
+{
+  "name": "FLORIXA Business",
+  "description": "Application de gestion de stock, de ventes et de dettes clients pour les commerces de proximité au Burundi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

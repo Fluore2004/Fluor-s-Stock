@@ -1,0 +1,74 @@
+                            <td className="p-3">
+                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                                sale.payment_status === 'Cash' 
+                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-150' 
+                                  : 'bg-amber-100 text-amber-800 border-amber-200'
+                              }`}>
+                                {sale.payment_status === 'Cash' ? 'Payé (Comptant)' : 'Dette / Crédit'}
+                              </span>
+                            </td>
+                            <td className="p-3 text-right font-bold text-slate-900">
+                              {formatBIF(sale.total_amount)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* 1-Third column: Fast Action / Low Stock references */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Besoins de Réapprovisionnement</h3>
+                  <div className="border border-slate-200 p-4 rounded-xl bg-white space-y-3">
+                    {products.filter(p => p.stock_quantity <= p.alert_quantity).length === 0 ? (
+                      <div className="text-center py-6 text-slate-400">
+                        <CheckCircle className="h-8 w-8 text-emerald-500 mx-auto mb-2" />
+                        <p className="text-xs font-bold">Tous les stocks sont au vert !</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {products.filter(p => p.stock_quantity <= p.alert_quantity).slice(0, 4).map(prod => (
+                          <div key={prod.id} className="flex justify-between items-center gap-2 p-2 border border-slate-100 rounded-lg bg-slate-50">
+                            <div className="min-w-0">
+                              <span className="text-[9px] font-bold text-slate-400 block">{prod.code}</span>
+                              <span className="text-xs font-bold text-slate-800 truncate block">{prod.name}</span>
+                              <span className="text-[10px] text-slate-500">Stock actuel : <strong className="text-rose-600 font-extrabold">{prod.stock_quantity}</strong> (Seuil : {prod.alert_quantity})</span>
+                            </div>
+                            <button 
+                              onClick={() => {
+                                setEditingProduct(prod);
+                                setStockSearch(prod.code);
+                                setActiveTab('stock');
+                              }}
+                              className="px-2 py-1 bg-amber-100 text-amber-900 border border-amber-200 rounded text-[10px] font-bold hover:bg-amber-200"
+                            >
+                              Éditer
+                            </button>
+                          </div>
+                        ))}
+                        {products.filter(p => p.stock_quantity <= p.alert_quantity).length > 4 && (
+                          <button 
+                            onClick={() => {
+                              setStockSearch('');
+                              setActiveTab('stock');
+                            }}
+                            className="w-full text-center text-xs font-bold text-[#0066FF] hover:underline"
+                          >
+                            Voir les {products.filter(p => p.stock_quantity <= p.alert_quantity).length - 4} autres...
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* MVP STRATEGIC INSTRUCTION CARD */}
+              <div className="bg-blue-50 border border-blue-200 p-4 rounded-xl text-xs text-blue-900">
+                <span className="font-bold block uppercase tracking-wider text-[10px] text-[#0066FF] mb-1">Ligne Directrice FLORIXA Technologies</span>
+                <p>
+                  "Problème réel → Prototype simple (MVP) → ~10 commerçants bêtatesteurs réels à Bujumbura. Nous nous concentrons uniquement sur l'élimination des pertes financières liées aux crédits non remboursés et à la rupture de stock."
+                </p>
+              </div>

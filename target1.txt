@@ -1,0 +1,196 @@
+  return (
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0D1B2A] flex flex-col font-sans selection:bg-[#0066FF] selection:text-white" id="app_root">
+      
+      {/* TOP NOTIFICATION BANNER */}
+      {notification && (
+        <div 
+          className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-5 py-4 rounded-xl shadow-lg border text-sm max-w-md animate-bounce ${
+            notification.type === 'success' 
+              ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
+              : notification.type === 'error'
+              ? 'bg-rose-50 text-rose-800 border-rose-200'
+              : 'bg-amber-50 text-amber-800 border-amber-200'
+          }`}
+          id="global_notification"
+        >
+          {notification.type === 'success' && <CheckCircle className="h-5 w-5 text-emerald-600 flex-shrink-0" />}
+          {notification.type === 'error' && <AlertTriangle className="h-5 w-5 text-rose-600 flex-shrink-0" />}
+          {notification.type === 'warning' && <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0" />}
+          <div>{notification.message}</div>
+        </div>
+      )}
+
+      {/* GLOBAL HEADER HEADER BAR */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm" id="main_header">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            
+            {/* BRANDING */}
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-[#0066FF] flex items-center justify-center text-white shadow-md shadow-blue-200">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <div>
+                <span className="font-bold text-lg tracking-tight text-[#0D1B2A]">FLORIXA <span className="text-[#0066FF]">Business</span></span>
+                <p className="text-[10px] text-slate-500 font-medium tracking-wider uppercase">AI • Software • Digital Solutions</p>
+              </div>
+            </div>
+
+            {/* STATUS & ROLE CONTROLS */}
+            <div className="flex items-center gap-4">
+              
+              {/* CURRENT SIMULATED USER CARD */}
+              <div className="hidden md:flex items-center gap-3 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-xs">
+                <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <div className="text-left">
+                  <span className="text-[10px] text-slate-400 block font-bold leading-none">BURUNDI MVP SIMULATEUR</span>
+                  <span className="font-bold text-slate-700 capitalize">{currentUser.username}</span> 
+                  <span className={`ml-2 px-1.5 py-0.5 rounded text-[9px] font-bold ${
+                    currentUser.role === 'Gérant' 
+                      ? 'bg-blue-100 text-[#0066FF]' 
+                      : 'bg-amber-100 text-amber-800'
+                  }`}>{currentUser.role}</span>
+                </div>
+              </div>
+
+              {/* SIMULATED LOGIN CONTROLLER */}
+              <button 
+                onClick={toggleRole}
+                className="flex items-center gap-2 px-3 py-1.5 border border-dashed border-slate-300 hover:border-blue-500 rounded-xl text-xs font-semibold text-slate-600 hover:text-[#0066FF] transition-all bg-white shadow-sm"
+                title="Simule le basculement d'autorisations pour tester l'application"
+                id="btn_toggle_role"
+              >
+                <ShieldCheck className="h-4 w-4" />
+                <span>Rôle : {currentUser.role === 'Gérant' ? 'Employé' : 'Gérant'}</span>
+              </button>
+
+              <button 
+                onClick={resetDemoState}
+                className="p-1.5 text-slate-400 hover:text-[#0066FF] hover:bg-slate-50 rounded-lg transition-colors"
+                title="Réinitialiser la simulation"
+                id="btn_reset_simulation"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+      {/* CORE FRAMEWORK GRID */}
+      <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
+        
+        {/* SIDE BAR NAVIGATION */}
+        <aside className="w-full md:w-64 flex-shrink-0" id="sidebar_nav_container">
+          <nav className="bg-white rounded-2xl border border-slate-200 p-4 space-y-1 shadow-sm sticky top-24" id="navigation_menu">
+            <div className="px-3 py-2 mb-4">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Navigation Principale</p>
+            </div>
+
+            <button 
+              onClick={() => setActiveTab('dashboard')}
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'dashboard' 
+                  ? 'bg-blue-50 text-[#0066FF]' 
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+              id="tab_dashboard"
+            >
+              <div className="flex items-center gap-3">
+                <LayoutDashboard className="h-4 w-4" />
+                <span>Tableau de Bord</span>
+              </div>
+              <ChevronRight className="h-3 w-3 opacity-60" />
+            </button>
+
+            <button 
+              onClick={() => setActiveTab('pos')}
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'pos' 
+                  ? 'bg-blue-50 text-[#0066FF]' 
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+              id="tab_pos"
+            >
+              <div className="flex items-center gap-3">
+                <ShoppingCart className="h-4 w-4" />
+                <span>Caisse (POS)</span>
+              </div>
+              <ChevronRight className="h-3 w-3 opacity-60" />
+            </button>
+
+            <button 
+              onClick={() => setActiveTab('stock')}
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'stock' 
+                  ? 'bg-blue-50 text-[#0066FF]' 
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+              id="tab_stock"
+            >
+              <div className="flex items-center gap-3">
+                <Package className="h-4 w-4" />
+                <span>Gestion Stocks</span>
+              </div>
+              {metrics.lowStockCount > 0 && (
+                <span className="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full border border-amber-200">
+                  {metrics.lowStockCount}
+                </span>
+              )}
+            </button>
+
+            <button 
+              onClick={() => setActiveTab('debts')}
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === 'debts' 
+                  ? 'bg-blue-50 text-[#0066FF]' 
+                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+              id="tab_debts"
+            >
+              <div className="flex items-center gap-3">
+                <Users className="h-4 w-4" />
+                <span>Suivi des Dettes</span>
+              </div>
+              {metrics.totalPendingDebts > 0 && (
+                <span className="bg-rose-100 text-rose-800 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full">
+                  !
+                </span>
+              )}
+            </button>
+
+            <div className="pt-4 mt-4 border-t border-slate-100">
+              <div className="px-3 py-2 mb-2">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Espace Développeur</p>
+              </div>
+
+              <button 
+                onClick={() => setActiveTab('code')}
+                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                  activeTab === 'code' 
+                    ? 'bg-blue-50 text-[#0066FF]' 
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-[#0066FF]'
+                }`}
+                id="tab_code"
+              >
+                <div className="flex items-center gap-3">
+                  <Code className="h-4 w-4" />
+                  <span>Code Production PHP</span>
+                </div>
+                <ChevronRight className="h-3 w-3 opacity-60" />
+              </button>
+            </div>
+
+            {/* BRAND INSCRIPTION */}
+            <div className="pt-10 text-center">
+              <div className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">FLORIXA TECHNOLOGIES</div>
+              <div className="text-[9px] text-slate-300 italic mt-1">"Innovate • Build • Transform"</div>
+              <div className="text-[10px] text-[#0066FF] mt-2 font-bold bg-blue-50 inline-block px-2.5 py-1 rounded-full border border-blue-100">Burundi MVP v1.0</div>
+            </div>
+          </nav>
+        </aside>
+
+        {/* MAIN MODULE CONTENT VIEWPORT */}
+        <main className="flex-1 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm min-h-[600px]" id="main_content_viewport">
+          
